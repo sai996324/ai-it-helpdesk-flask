@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}New ticket{% endblock %}
+{% block content %}
+<h1>New ticket</h1>
+<form class="card" method="post">
+  <label for="requester">Your name</label>
+  <input id="requester" name="requester" type="text" required value="{{ request.form.get('requester', '') }}">
+
+  <label for="title">Title</label>
+  <input id="title" name="title" type="text" required value="{{ request.form.get('title', '') }}">
+
+  <label for="description">Describe the problem</label>
+  <textarea id="description" name="description" required>{{ request.form.get('description', '') }}</textarea>
+  <p class="ai-note">Category and priority are predicted automatically when you submit. An agent can change them later.</p>
+
+  <p><button class="btn" type="submit">Submit ticket</button></p>
+</form>
+{% endblock %}

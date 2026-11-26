@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Ticket #{{ ticket.id }}{% endblock %}
+{% block content %}
+<h1>#{{ ticket.id }} {{ ticket.title }}</h1>
+<div class="card">
+  <p class="meta">Raised by {{ ticket.requester }} on {{ ticket.created_at }} · Last updated {{ ticket.updated_at }}</p>
+  <p>{{ ticket.description }}</p>
+  {% if ticket.ai_suggested %}
+    <p class="ai-note">Category and priority were first suggested by the AI model.</p>
+  {% endif %}
+</div>
+
+<form class="card" method="post">
+  <div class="grid">
+    <div>
+      <label for="status">Status</label>
+      <select id="status" name="status">
+        {% for s in statuses %}<option {{ 'selected' if s == ticket.status }}>{{ s }}</option>{% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="priority">Priority</label>
+      <select id="priority" name="priority">
+        {% for p in priorities %}<option {{ 'selected' if p == ticket.priority }}>{{ p }}</option>{% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="category">Category</label>
+      <select id="category" name="category">
+        {% for c in categories %}<option {{ 'selected' if c == ticket.category }}>{{ c }}</option>{% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="assigned_to">Assigned to</label>
+      <select id="assigned_to" name="assigned_to">
+        {% for a in agents %}<option {{ 'selected' if a == (ticket.assigned_to or 'Unassigned') }}>{{ a }}</option>{% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <label for="resolution">Resolution note</label>
+  <textarea id="resolution" name="resolution">{{ ticket.resolution or '' }}</textarea>
+
+  <p><button class="btn" type="submit">Save changes</button>
+     <a class="btn secondary" href="{{ url_for('index') }}">Back to tickets</a></p>
+</form>
+{% endblock %}
